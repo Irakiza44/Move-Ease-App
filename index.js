@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/api/contacts', require('./routes/contactRoutes'));
 app.use('/api/users', require('./routes/usersRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
+app.use('/api/places', require('./routes/placeRoutes'));
 // Error handling middleware
 app.use(errorHandler);
 
