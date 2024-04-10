@@ -4,10 +4,15 @@ const nodemailer = require('nodemailer');
 
 //@ desc Get all contacts
 //@route GET/api/contacts
-//@access private
+//@access public
 const getContacts = asyncHandler(async (req, res) => {
     const contacts = await Contact.find();
-    res.status(200).json(contacts)
+    const totalUsers = contacts.length;
+    res.status(200).json({
+        totalUsers,
+        contacts
+    });
+
 })
 
 //@ desc Post all contacts

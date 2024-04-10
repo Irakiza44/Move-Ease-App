@@ -4,6 +4,15 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const nodemailer = require('nodemailer');
 
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find();
+    const totalUsers = users.length;
+    res.status(200).json({
+        totalUsers,
+        users
+    });
+});
+
 
 //@ desc Register a user
 //@route POST/api/users/register
@@ -120,5 +129,6 @@ const currentUser = asyncHandler(async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
-    currentUser
+    currentUser,
+    getUsers
 };
