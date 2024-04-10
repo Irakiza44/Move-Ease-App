@@ -25,10 +25,26 @@ const createContact = asyncHandler(async (req, res) => {
         natinalId,
         cellname
     } = req.body;
+
     if (!name || !email || !natinalId || !cellname) {
         res.status(400);
         throw new Error("All fields are Mandatory !!");
     }
+
+    // Check if the email already exists in the database
+    const existingContact = await Contact.findOne({
+        email
+    });
+    const existingnId = await Contact.findOne({
+        natinalId
+    });
+
+    if (existingContact || existingnId) {
+        res.status(401);
+        throw new Error(`You are already registered in ${cellname}, If your are moving out. Please choose Yes else No`);
+    }
+
+    // Create the contact if the email does not exist
     const contact = await Contact.create({
         name,
         email,
@@ -36,6 +52,7 @@ const createContact = asyncHandler(async (req, res) => {
         cellname,
         user_id: req.user.id
     });
+
     sendEmailNotification(contact);
 
     res.status(201).json(contact);
