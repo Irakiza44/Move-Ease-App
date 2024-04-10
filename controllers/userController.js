@@ -55,7 +55,7 @@ const sendRegistrationEmail = (user) => {
         service: 'gmail',
         auth: {
             user: 'moveeaseapp@gmail.com',
-            pass: 'jtbb bmra nmnj bjrw'
+            pass: process.env.EMAIL_PASSWORD
         }
     });
 
