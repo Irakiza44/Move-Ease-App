@@ -5,9 +5,7 @@ const Contact = require('../models/contactModel')
 //@route GET/api/contacts
 //@access private
 const getContacts = asyncHandler(async (req, res) => {
-    const contacts = await Contact.find({
-        user_id: req.user.id
-    });
+    const contacts = await Contact.find();
     res.status(200).json(contacts)
 })
 
@@ -59,7 +57,7 @@ const updateContact = asyncHandler(async (req, res) => {
     }
     if (contact.user_id.toString() !== req.user.id) {
         res.status(403);
-        throw new Error("User dont have permission to update other contacts")
+        throw new Error("User don't have permission to update other contacts")
     }
 
     const updatedContact = await Contact.findByIdAndUpdate(

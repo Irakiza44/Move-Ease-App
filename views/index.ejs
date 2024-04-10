@@ -1,0 +1,17 @@
+<!-- contacts.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contact List</title>
+    </head>
+    <body>
+        <h1>Contact List</h1>
+        <ul>
+            <% contacts.forEach(contact => { %>
+            <li><%= contact.name %>: <%= contact.email %></li>
+            <% }); %>
+        </ul>
+    </body>
+</html>

@@ -22,7 +22,6 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Password mismatch");
     }
-
     const userAvailable = await User.findOne({
         email
     });
@@ -35,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("hashed password:", hashedPassword);
 
-    // Create user with default role
+    // Create user
     const user = await User.create({
         email,
         password: hashedPassword,
