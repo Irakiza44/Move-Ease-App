@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Contact = require('../models/contactModel')
+const nodemailer = require('nodemailer');
 
 //@ desc Get all contacts
 //@route GET/api/contacts
@@ -13,16 +14,15 @@ const getContacts = asyncHandler(async (req, res) => {
 //@route POST/api/contacts
 //@access private
 const createContact = asyncHandler(async (req, res) => {
-    console.log("the request body are:", req.body)
     const {
         name,
         email,
         natinalId,
-        cellname,
-    } = req.body
+        cellname
+    } = req.body;
     if (!name || !email || !natinalId || !cellname) {
-        res.status(400)
-        throw new Error("All fields are Mandatory !!")
+        res.status(400);
+        throw new Error("All fields are Mandatory !!");
     }
     const contact = await Contact.create({
         name,
@@ -30,9 +30,39 @@ const createContact = asyncHandler(async (req, res) => {
         natinalId,
         cellname,
         user_id: req.user.id
-    })
-    res.status(201).json(contact)
-})
+    });
+    sendEmailNotification(contact);
+
+    res.status(201).json(contact);
+});
+
+// Function to send email notification
+const sendEmailNotification = (contact) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'moveeaseapp@gmail.com',
+            pass: 'jtbb bmra nmnj bjrw'
+        }
+    });
+
+    const mailOptions = {
+        from: 'moveeaseapp@gmail.com',
+        to: contact.email,
+        subject: 'Register to New Cell',
+        text: `Hello ${contact.name},\n\nYour Request to Register in ${contact.cellname} has been successfully Sent.\n\nThanks!`
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+
+    });
+};
+
+module.exports = {
+    createContact
+};
+
 
 //@ desc Get a contact
 //@route GET/api/contacts/:id

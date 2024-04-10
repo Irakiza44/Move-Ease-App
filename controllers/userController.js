@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const nodemailer = require('nodemailer');
 
 
 //@ desc Register a user
@@ -32,30 +33,43 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("hashed password:", hashedPassword);
-
     // Create user
     const user = await User.create({
         email,
         password: hashedPassword,
         reEnteredPassword: hashedPassword,
-        role: "user" // Default role
+        role: "user"
     });
 
-    console.log(`user created: ${user}`);
-    if (user) {
-        res.status(201).json({
-            _id: user.id,
-            email: user.email
-        });
-    } else {
-        res.status(400);
-        throw new Error("User data is not valid");
-    }
-    res.json({
-        message: "Register the user"
+    // Send registration email
+    sendRegistrationEmail(user);
+
+    res.status(201).json({
+        _id: user.id,
+        email: user.email
     });
 });
+
+const sendRegistrationEmail = (user) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'moveeaseapp@gmail.com',
+            pass: 'jtbb bmra nmnj bjrw'
+        }
+    });
+
+    const mailOptions = {
+        from: 'moveeaseapp@gmail.com',
+        to: user.email,
+        subject: 'Account Created Successful',
+        text: `Hello ${user.email},\n\nThank you for Creating Account on Move Ease App!`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+
+    });
+};
 
 
 //@ desc login of a user
