@@ -1,7 +1,4 @@
-// middleware/chatLogger.js
-
 const ChatMessage = require('../models/chatMessage');
-
 const chatLogger = async (req, res, next) => {
     try {
         const {
