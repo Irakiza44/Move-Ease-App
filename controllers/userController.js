@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const nodemailer = require('nodemailer');
 
+//@ desc Get users
+//@route GET/api/users
+//@access public
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find();
     const totalUsers = users.length;
