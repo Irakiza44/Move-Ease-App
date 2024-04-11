@@ -16,6 +16,8 @@ app.use('/api/users', require('./routes/usersRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
 app.use('/api/places', require('./routes/placeRoutes'));
 app.use('/api/contact-us', require('./routes/contactUsRoutes'));
+app.use('/api/surveys', require('./routes/surveyRoutes'));
+app.use('/api/surveys', require('./routes/surveyRoutes'));
 // Error handling middleware
 app.use(errorHandler);
 
