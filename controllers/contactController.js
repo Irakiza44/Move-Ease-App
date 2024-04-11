@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const Contact = require('../models/contactModel')
 const nodemailer = require('nodemailer');
+const BackupContact = require('../models/backupContactModel');
 
 //@ desc Get all contacts
 //@route GET/api/contacts
@@ -132,12 +133,63 @@ const deleteContact = asyncHandler(async (req, res) => {
     }
     if (contact.user_id.toString() !== req.user.id) {
         res.status(403);
-        throw new Error("User dont have permission to update other contacts")
+        throw new Error("User doesn't have permission to update other contacts");
     }
+
+    // Backup the deleted contact data to a different table
+    await backupDeletedContact(contact);
+
+    // Delete the contact
     await Contact.deleteOne({
         _id: req.params.id
     });
+
     res.status(200).json(contact);
+});
+
+
+
+const backupDeletedContact = async (contact) => {
+    // Create a new backup contact using the contact data
+    const backupContact = new BackupContact({
+        name: contact.name,
+        email: contact.email,
+        natinalId: contact.natinalId,
+        cellname: contact.cellname,
+        user_id: contact.user_id
+    });
+
+    // Save the backup contact to the database
+    await backupContact.save();
+};
+
+// @desc    Get all backup contacts
+// @route   GET /api/backup-contacts
+// @access  Private
+const getBackupContacts = asyncHandler(async (req, res) => {
+    const backupContacts = await BackupContact.find();
+    res.status(200).json(backupContacts);
+});
+
+
+// @desc    Delete a backup contact
+// @route   DELETE /api/backup-contacts/:id
+// @access  Private
+const deleteBackupContact = asyncHandler(async (req, res) => {
+    const backupContact = await BackupContact.findById(req.params.id);
+    if (!backupContact) {
+        res.status(404);
+        throw new Error('Backup contact not found');
+    }
+
+    await BackupContact.deleteOne({
+        _id: req.params.id
+    });
+
+    res.status(200).json({
+        success: true,
+        data: backupContact
+    });
 });
 
 module.exports = {
@@ -145,5 +197,7 @@ module.exports = {
     createContact,
     getContact,
     updateContact,
-    deleteContact
+    deleteContact,
+    getBackupContacts,
+    deleteBackupContact
 };
