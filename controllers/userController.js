@@ -105,15 +105,18 @@ const loginUser = asyncHandler(async (req, res) => {
                 user: {
                     userName: user.userName,
                     email: user.email,
-                    id: user.id
+                    id: user.id,
+                    role: user.role
                 },
             },
             process.env.ACCESS_TOKEN_SECERT, {
                 expiresIn: "15m"
             }
         )
+        console.log(user.role)
         res.status(200).json({
-            accessToken
+            accessToken,
+            role: user.role
         })
     } else {
         res.status(401)
