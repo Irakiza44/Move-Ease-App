@@ -116,7 +116,8 @@ const loginUser = asyncHandler(async (req, res) => {
         console.log(user.role)
         res.status(200).json({
             accessToken,
-            role: user.role
+            role: user.role,
+            email: user.email
         })
     } else {
         res.status(401)
