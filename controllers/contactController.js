@@ -32,7 +32,7 @@ const createContact = asyncHandler(async (req, res) => {
         throw new Error("All fields are Mandatory !!");
     }
 
-    // Check if the email already exists in the database
+    // Check if the email or national ID already exists in the database
     const existingContact = await Contact.findOne({
         email
     });
@@ -42,8 +42,21 @@ const createContact = asyncHandler(async (req, res) => {
 
     if (existingContact || existingnId) {
         res.status(401);
-        throw new Error(`You are already registered, If your are moving out. Please choose Yes else No`);
+        const error = new Error(`You are already registered in ${existingContact ? existingContact.cellname : existingnId.cellname}, If you are moving out. Please choose Yes else No`);
+        error.title = "Unauthorized";
+        error.stackTrace = error.stack; // Capture the stack trace
+        error._id = existingContact ? existingContact._id : existingnId._id; // Get the _id of the existing contact
+
+        res.json({
+            title: error.title,
+            message: error.message,
+            stackTrace: error.stackTrace,
+            _id: error._id, // Include _id in the response
+
+        });
+        throw error;
     }
+
 
     // Create the contact if the email does not exist
     const contact = await Contact.create({
