@@ -42,7 +42,7 @@ const createContact = asyncHandler(async (req, res) => {
 
     if (existingContact || existingnId) {
         res.status(401);
-        throw new Error(`You are already registered in ${cellname}, If your are moving out. Please choose Yes else No`);
+        throw new Error(`You are already registered, If your are moving out. Please choose Yes else No`);
     }
 
     // Create the contact if the email does not exist
