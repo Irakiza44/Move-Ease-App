@@ -1,6 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const ChatMessage = require('../models/chatMessage');
 
+//@ desc Post message
+//@route POST/api/chat/send
+//@access private
 const sendMessage = asyncHandler(async (req, res) => {
     // Check if user is authenticated
     if (!req.user) {
