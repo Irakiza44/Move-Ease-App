@@ -56,7 +56,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     } else if (message.toLowerCase().includes('estimates for packing supplies and moving truck rental?')) {
         response = "The estimates for packing supplies and moving truck rental are...";
     } else {
-        response = "I'm sorry, I didn't understand that.";
+        response = "I'm sorry, About that but you can Visit this Website: https://www.kicukiro.gov.rw/ ";
     }
 
     const newMessage = new ChatMessage({
