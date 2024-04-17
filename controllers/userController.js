@@ -110,7 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
                 },
             },
             process.env.ACCESS_TOKEN_SECERT, {
-                expiresIn: "15m"
+                expiresIn: "30m"
             }
         )
         console.log(user.role)
