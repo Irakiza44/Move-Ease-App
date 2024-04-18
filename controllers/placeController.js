@@ -14,7 +14,7 @@ const getNearbyPlaces = async (req, res, next) => {
             type
         } = req.query;
         const radius = 5000;
-        const apiKey = mapApiKey;
+        const apiKey = process.env.googleMapsApiKey;
         const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&type=${type}&key=${apiKey}`;
 
         const response = await axios.get(apiUrl);

@@ -177,16 +177,20 @@ const backupDeletedContact = async (contact) => {
 };
 
 // @desc    Get all backup contacts
-// @route   GET /api/backup-contacts
+// @route   GET /api/contacts/backup-contacts
 // @access  Private
 const getBackupContacts = asyncHandler(async (req, res) => {
     const backupContacts = await BackupContact.find();
-    res.status(200).json(backupContacts);
+    const totalUsers = backupContacts.length;
+    res.status(200).json({
+        totalUsers,
+        backupContacts
+    });
 });
 
 
 // @desc    Delete a backup contact
-// @route   DELETE /api/backup-contacts/:id
+// @route   DELETE /api/contacts/backup-contacts/:id
 // @access  Private
 const deleteBackupContact = asyncHandler(async (req, res) => {
     const backupContact = await BackupContact.findById(req.params.id);
