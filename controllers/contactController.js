@@ -42,7 +42,7 @@ const createContact = asyncHandler(async (req, res) => {
 
     if (existingContact || existingnId) {
         res.status(401);
-        const error = new Error(`You are already registered in ${existingContact ? existingContact.cellname : existingnId.cellname}, If you are moving out. Please choose Yes else No`);
+        const error = new Error(`You are already registered in ${existingContact ? existingContact.cellname : existingnId.cellname}, If you are moving out. Please choose Yes else Cancel`);
         error.title = "Unauthorized";
         error.stackTrace = error.stack; // Capture the stack trace
         error._id = existingContact ? existingContact._id : existingnId._id; // Get the _id of the existing contact
