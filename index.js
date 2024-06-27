@@ -21,6 +21,8 @@ app.use('/api/places', require('./routes/placeRoutes'));
 app.use('/api/contact-us', require('./routes/contactUsRoutes'));
 app.use('/api/surveys', require('./routes/surveyRoutes'));
 app.use('/api/surveys', require('./routes/surveyRoutes'));
+app.use('/api/issues', require('./routes/issueRoutes'));
+app.use('/api/visitors', require('./routes/visitorRoutes'));
 // Error handling middleware
 app.use(errorHandler);
 
